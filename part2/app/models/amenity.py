@@ -1,4 +1,4 @@
-from modele_base import ModeleBase
+from app.models.modele_base import ModeleBase
 
 class Equipement(ModeleBase):
     """Classe représentant un équipement/amenity."""
