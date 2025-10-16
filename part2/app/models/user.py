@@ -1,5 +1,6 @@
-from modele_base import ModeleBase
+from .modele_base import ModeleBase
 import re
+from datetime import datetime
 
 class Utilisateur(ModeleBase):
     """Classe représentant un utilisateur de HBnB."""
@@ -44,7 +45,8 @@ class Utilisateur(ModeleBase):
     def email(self, value):
         if not isinstance(value, str) or not value.strip():
             raise ValueError("L'email doit être une chaîne non vide.")
-        pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+        # Regex plus stricte
+        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         if not re.match(pattern, value.strip()):
             raise ValueError("L'email n'est pas valide.")
         self.__email = value.strip()
@@ -69,13 +71,6 @@ class Utilisateur(ModeleBase):
             raise TypeError("is_admin doit être un booléen.")
         self.__is_admin = value
 
-    def update(self, data):
-        for key, value in data.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
-        self.sauvegarder()
-        return self
-
     def to_dict(self, include_password=False):
         data = {
             "id": self.id,
@@ -83,8 +78,8 @@ class Utilisateur(ModeleBase):
             "nom": self.nom,
             "email": self.email,
             "is_admin": self.is_admin,
-            "date_creation": self.date_creation,
-            "date_mise_a_jour": self.date_mise_a_jour
+            "date_creation": self.date_creation.isoformat() if isinstance(self.date_creation, datetime) else self.date_creation,
+            "date_mise_a_jour": self.date_mise_a_jour.isoformat() if isinstance(self.date_mise_a_jour, datetime) else self.date_mise_a_jour
         }
         if include_password:
             data["mot_de_passe"] = self.mot_de_passe
