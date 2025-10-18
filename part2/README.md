@@ -18,34 +18,7 @@ Ce projet constitue la base du futur clone d’Airbnb, en introduisant les fonct
 
 ## Architecture du projet :
 
-part2/
-│
-├── app/
-│   ├── __init__.py              → Initialise l’application Flask
-│   │
-│   ├── api/
-│   │   └── v1/
-│   │       ├── users.py         → Endpoints relatifs aux utilisateurs
-│   │       ├── places.py        → Endpoints relatifs aux lieux
-│   │       ├── reviews.py       → Endpoints relatifs aux avis
-│   │       └── amenities.py     → Endpoints relatifs aux équipements
-│   │
-│   ├── models/
-│   │   ├── modele_base.py       → Classe de base pour les modèles
-│   │   ├── user.py              → Classe 'Utilisateur'
-│   │   ├── place.py             → Classe 'Lieu'
-│   │   ├── review.py            → Classe 'Avis'
-│   │   └── amenity.py           → Classe 'Equipement'
-│   │
-│   ├── services/
-│   │   ├── facade.py            → Classe 'HBnBFacade', interface unique vers la logique métier
-│   │   └── __init__.py
-│   │
-│   └── persistence/
-│       └── repository.py        → Définition du dépôt en mémoire (InMemoryRepository)
-│
-├── run.py                       → Point d’entrée de l’application
-└── README.md                    → Documentation du projet
+<img width="527" height="469" alt="Capture d’écran 2025-10-19 à 00 22 58" src="https://github.com/user-attachments/assets/1cce1ab0-2184-49fb-8f08-e3d909d99914" />
 
 
 
