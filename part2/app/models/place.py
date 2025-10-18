@@ -1,6 +1,6 @@
-from modele_base import ModeleBase
-from user import Utilisateur
-from amenity import Equipement as Amenity
+from .modele_base import ModeleBase
+from app.models.amenity import Equipement as Amenity
+from app.models.user import Utilisateur
 
 class Lieu(ModeleBase):
     """Classe représentant un lieu proposé sur HBnB."""
@@ -136,8 +136,8 @@ class Lieu(ModeleBase):
         self.sauvegarder()
         return self
     
-    def to_dict(self):
-        return {
+    def to_dict(self, include_owner=False, include_amenities=False):
+        data ={
             "id": self.id,
             "titre": self.titre,
             "description": self.description,
@@ -150,7 +150,19 @@ class Lieu(ModeleBase):
             "reviews": [r.id for r in self.reviews],
             "amenities": [a.id for a in self.amenities],
         }
-    
+        if include_owner and self.owner:
+            data["owner"] = {
+                "id": self.owner.id,
+                "first_name": self.owner.prenom,
+                "last_name": self.owner.nom,
+                "email": self.owner.email
+            }
+        if include_amenities and self.amenities:
+            data["amenities"] = [
+                {"id": a.id, "name": getattr(a, "nom", "Inconnu")} 
+                for a in self.amenities
+            ]
+        return data
     
     def AjoutLieu(self):
         print(f"Ajout du lieu : {self.titre}")

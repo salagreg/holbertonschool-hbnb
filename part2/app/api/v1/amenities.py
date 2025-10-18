@@ -1,15 +1,14 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from app.services import HBnBFacade
+from app.services.facade import HBnBFacade
 
-api = Namespace('amenities', description='Opérations liées aux équipements')
+api = Namespace('amenities', description='Gestion des équipements')
 facade = HBnBFacade()
 
-
-# Modèle pour Swagger et validation d’entrée
+# Modèle Swagger (en français)
 amenity_model = api.model('Amenity', {
-    'nom': fields.String(required=True, description='Nom de l’équipement'),
-    'description': fields.String(description='Description optionnelle')
+    'nom': fields.String(required=True, description="Nom de l’équipement"),
+    'description': fields.String(required=False, description="Description de l'équipement")
 })
 
 @api.route('/')
@@ -20,49 +19,42 @@ class AmenityList(Resource):
     def post(self):
         """Créer un nouvel équipement"""
         data = api.payload
-        result, status = facade.create_amenity(data)
-        return result, status
+        if not data or not data.get("nom"):
+            return {"message": "Le champ 'nom' est requis."}, 400
 
-    @api.response(200, 'List of amenities retrieved successfully')
+        new_amenity = facade.create_amenity(data)
+        return new_amenity, 201
+    
+    @api.response(200, 'Liste des équipements récupérée avec succès')
     def get(self):
-        """Liste des équipements récupérée avec succès"""
-        result, status = facade.get_all_amenities()
-        return result, status
+        """Récupérer la liste de tous les équipements"""
+        return facade.get_all_amenities(), 200
 
-@api.route('/<amenity_id>')
+
+@api.route('/<string:amenity_id>')
+@api.param('amenity_id', 'ID de l’équipement')
 class AmenityResource(Resource):
-    @api.response(200, 'Équipement trouvé')
+    @api.response(200, 'Détails de l’équipement récupérés avec succès')
     @api.response(404, 'Équipement non trouvé')
     def get(self, amenity_id):
-        """Obtenir un équipement par ID"""
-        result, status = facade.get_amenity(amenity_id)
-        return result, status
-
+        """Récupérer un équipement par ID"""
+        equip = facade.get_amenity(amenity_id)
+        if not equip:
+            return {"message": "Équipement non trouvé"}, 404
+        return equip, 200
 
     @api.expect(amenity_model)
     @api.response(200, 'Équipement mis à jour avec succès')
     @api.response(404, 'Équipement non trouvé')
-    @api.response(400, 'Invalid input data')
+    @api.response(400, 'Données invalides')
     def put(self, amenity_id):
-        """Mettre à jour un équipement existant"""
+        """Mettre à jour un équipement"""
         data = api.payload
-        result, status = facade.update_amenity(amenity_id, data)
-        return result, status
-    
-@api.route('/amenities')
-class AmenityList(Resource):
-    def get(self):
-        return AmenityFacade().get_all_amenities()
+        if not data or not data.get("nom"):
+            return {"message": "Le champ 'nom' est requis."}, 400
 
-    def post(self):
-        data = request.get_json()
-        return AmenityFacade().create_amenity(data)
+        updated = facade.update_amenity(amenity_id, data)
+        if not updated:
+            return {"message": "Équipement non trouvé"}, 404
 
-@api.route('/amenities/<amenity_id>')
-class AmenityResource(Resource):
-    def get(self, amenity_id):
-        return AmenityFacade().get_amenity(amenity_id)
-
-    def put(self, amenity_id):
-        data = request.get_json()
-        return AmenityFacade().update_amenity(amenity_id, data)
+        return updated, 200
