@@ -99,6 +99,27 @@ http://127.0.0.1:5000/api/v1/
 
 
 
+TESTS :
+
+Créer utilisateur : 
+
+<img width="466" height="692" alt="Créer un nouvel utilisateur" src="https://github.com/user-attachments/assets/f417b0fb-6ecf-4e3c-a565-f84c79e83b24" />
+
+Récupérer une liste d'utilisateurs :
+
+<img width="476" height="585" alt="Récupérer liste utilisateur " src="https://github.com/user-attachments/assets/ed621eca-0c08-405a-a2c2-8b0aaa327a1e" />
+
+
+Créer un nouvel équipement :
+
+<img width="471" height="719" alt="Créer un nouvel équipement " src="https://github.com/user-attachments/assets/79dd5049-77f8-48a3-bacb-9316a20c4d85" />
+
+Récupérer une liste d'équipement :
+
+<img width="489" height="628" alt="Récupérer une liste d'equipement " src="https://github.com/user-attachments/assets/230485fd-3394-4ad0-9293-2859a179124a" />
+
+
+
 ## Auteurs
 
 * Grégory Sala
