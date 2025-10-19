@@ -66,12 +66,14 @@ Chaque fichier dans app/api/v1/ définit un namespace Flask-RESTx (par exemple :
 
 ## Endpoints disponibles : 
 
-POST	-->  /api/v1/users/	      --> Créer un nouvel utilisateur
-GET	  -->  /api/v1/users/	      --> Récupérer tous les utilisateurs
-GET	  -->  /api/v1/users/<id>   -->	Récupérer un utilisateur par ID
-PUT	  -->  /api/v1/users/<id>	  --> Mettre à jour un utilisateur
+POST	-->  /api/v1/users/	     --> Créer un nouvel utilisateur
+GET	 -->  /api/v1/users/	     --> Récupérer tous les utilisateurs
+GET	 -->  /api/v1/users/<id>  -->	Récupérer un utilisateur par ID
+PUT	 -->  /api/v1/users/<id>	 --> Mettre à jour un utilisateur
 
 Chaque ressource (places, reviews, amenities) suit la même logique CRUD.
+
+
 
 ## Installation & Execution
 
