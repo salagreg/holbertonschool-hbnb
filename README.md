@@ -1,2 +1,1 @@
-# holbertonschool-hbnb
-Projet Hbnb - Clone Airbnb
+PROJET HBnB
