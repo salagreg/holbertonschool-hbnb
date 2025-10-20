@@ -5,7 +5,6 @@ from app.services.facade import HBnBFacade
 api = Namespace('amenities', description='Gestion des équipements')
 facade = HBnBFacade()
 
-# Modèle Swagger (en français)
 amenity_model = api.model('Amenity', {
     'nom': fields.String(required=True, description="Nom de l’équipement"),
     'description': fields.String(required=False, description="Description de l'équipement")
@@ -13,6 +12,9 @@ amenity_model = api.model('Amenity', {
 
 @api.route('/')
 class AmenityList(Resource):
+    """Gestion des opérations sur la collection d’équipements"""
+
+
     @api.expect(amenity_model)
     @api.response(201, 'Équipement créé avec succès')
     @api.response(400, 'Entrée invalide')
@@ -34,6 +36,9 @@ class AmenityList(Resource):
 @api.route('/<string:amenity_id>')
 @api.param('amenity_id', 'ID de l’équipement')
 class AmenityResource(Resource):
+    """Gestion des opérations sur un équipement individuel"""
+
+    
     @api.response(200, 'Détails de l’équipement récupérés avec succès')
     @api.response(404, 'Équipement non trouvé')
     def get(self, amenity_id):

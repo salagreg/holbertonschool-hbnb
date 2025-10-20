@@ -19,10 +19,12 @@ user_model = api.model('User', {
 
 @api.route('/')
 class UserList(Resource):
+    """Gestion des opérations sur la collection d'utilisateurs"""
+
+
     @api.marshal_list_with(user_model)
     def get(self):
         "Récupère la liste de tous les utilisateurs"
-        # ici tu récupères tous les utilisateurs et tu renvoies la liste de dicts
         return facade.get_all_users()
 
     @api.expect(user_model)
@@ -37,7 +39,9 @@ class UserList(Resource):
 
 @api.route('/<string:user_id>')
 class UserUpdate(Resource):
+    """Gestion des opérations sur un utilisateur individuel"""
 
+    
     @api.marshal_with(user_model)
     def get(self, user_id):
         """Récupère un utilisateur par son ID"""

@@ -6,6 +6,7 @@ class Lieu(ModeleBase):
     """Classe représentant un lieu proposé sur HBnB."""
 
     def __init__(self, titre, description, prix, latitude, longitude, nbr_max_voyageurs, nbr_chambres, owner=None, **kwargs):
+        """Initialise un lieu avec ses caractéristiques principales."""
         from review import Avis
         super().__init__(**kwargs)
         self.titre = titre
@@ -15,16 +16,18 @@ class Lieu(ModeleBase):
         self.longitude = longitude
         self.nbr_max_voyageurs = nbr_max_voyageurs
         self.nbr_chambres = nbr_chambres
-        self.owner = owner # instance de Utilisateur
-        self.reviews = []  # liste de Review
-        self.amenities = []  # liste de Amenity
+        self.owner = owner
+        self.reviews = []
+        self.amenities = []
     
     @property
     def titre(self):
+        """Retourne le titre du lieu."""
         return self.__titre
     
     @titre.setter
     def titre(self, value):
+        """Définit et valide le titre."""
         if not isinstance(value, str):
             raise TypeError("Le titre doit être une chaîne de caractères.")
         if not value.strip():
@@ -34,10 +37,12 @@ class Lieu(ModeleBase):
     
     @property
     def description(self):
+        """Retourne la description du lieu."""
         return self.__description
 
     @description.setter
     def description(self, value):
+        """Définit et valide la description."""
         if not isinstance(value, str):
             raise TypeError("La description doit être une chaîne de caractères.")
         if not value.strip():
@@ -46,10 +51,12 @@ class Lieu(ModeleBase):
 
     @property
     def prix(self):
+        """Retourne le prix du lieu (par nuit)."""
         return self.__prix
 
     @prix.setter
     def prix(self, value):
+        """Définit et valide le prix (nombre positif)."""
         if not isinstance(value, (int, float)):
             raise TypeError("Le prix doit être un nombre.")
         if value < 0:
@@ -58,10 +65,12 @@ class Lieu(ModeleBase):
     
     @property
     def latitude(self):
+        """Retourne la latitude du lieu."""
         return self.__latitude
 
     @latitude.setter
     def latitude(self, value):
+        """Définit et valide la latitude (entre -90 et 90)."""
         if not isinstance(value, (int, float)):
             raise TypeError("La latitude doit être un nombre.")
         if not (-90 <= value <= 90):
@@ -70,10 +79,12 @@ class Lieu(ModeleBase):
     
     @property
     def longitude(self):
+        """Retourne la longitude du lieu."""
         return self.__longitude
 
     @longitude.setter
     def longitude(self, value):
+        """Définit et valide la longitude (entre -180 et 180)."""
         if not isinstance(value, (int, float)):
             raise TypeError("La longitude doit être un nombre.")
         if not (-180 <= value <= 180):
@@ -82,10 +93,12 @@ class Lieu(ModeleBase):
 
     @property
     def nbr_max_voyageurs(self):
+        """Retourne le nombre maximum de voyageurs autorisés."""
         return self.__nbr_max_voyageurs
 
     @nbr_max_voyageurs.setter
     def nbr_max_voyageurs(self, value):
+        """Définit et valide le nombre maximum de voyageurs (entier positif)."""
         if not isinstance(value, int):
             raise TypeError("Le nombre maximum de voyageurs doit être un entier.")
         if value <= 0:
@@ -94,10 +107,12 @@ class Lieu(ModeleBase):
     
     @property
     def nbr_chambres(self):
+        """Retourne le nombre de chambres du lieu."""
         return self.__nbr_chambres
 
     @nbr_chambres.setter
     def nbr_chambres(self, value):
+        """Définit et valide le nombre de chambres (entier >= 0)."""
         if not isinstance(value, int):
             raise TypeError("Le nombre de chambres doit être un entier.")
         if value < 0:
@@ -106,9 +121,12 @@ class Lieu(ModeleBase):
     
     @property
     def owner(self):
+        """Retourne le propriétaire du lieu."""
         return self.__owner
+    
     @owner.setter
     def owner(self, value):
+        """Définit le propriétaire du lieu (instance de `Utilisateur` ou None)."""
         if value is not None and not isinstance(value, Utilisateur):
             raise TypeError("owner doit être une instance de User ou None")
         self.__owner = value
@@ -116,6 +134,7 @@ class Lieu(ModeleBase):
     
     @classmethod
     def filtrer(cls, lieux, latitude=None, longitude=None, nbr_chambres=None, prix=None):
+        """Filtre une liste de lieux selon plusieurs critères."""
         resultats = []
         for lieu in lieux:
             if latitude is not None and lieu.latitude != latitude:
@@ -130,6 +149,7 @@ class Lieu(ModeleBase):
         return resultats
     
     def update(self, data):
+        """Met à jour les attributs du lieu avec les données fournies."""
         for key, value in data.items():
             if hasattr(self, key):
                 setattr(self, key, value)
@@ -137,6 +157,7 @@ class Lieu(ModeleBase):
         return self
     
     def to_dict(self, include_owner=False, include_amenities=False):
+        """Convertit le lieu en dictionnaire pour la sérialisation JSON."""
         data ={
             "id": self.id,
             "titre": self.titre,
@@ -165,10 +186,13 @@ class Lieu(ModeleBase):
         return data
     
     def AjoutLieu(self):
+        """Affiche un message lors de l’ajout d’un nouveau lieu."""
         print(f"Ajout du lieu : {self.titre}")
 
     def ModificationLieu(self, **kwargs):
+        """Affiche un message et met à jour un lieu existant."""
         self.update(kwargs)
 
     def SuppressionLieu(self):
+        """Affiche un message lors de la suppression d’un lieu."""
         print(f"Suppression du lieu : {self.titre}")

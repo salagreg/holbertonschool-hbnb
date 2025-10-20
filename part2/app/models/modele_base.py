@@ -3,8 +3,12 @@ import uuid
 from datetime import datetime
 
 class ModeleBase:
+    """Classe de base pour tous les modèles de l’application HBnB."""
+
+
     _instances = {}
     def __init__(self, id=None, date_creation=None, date_mise_a_jour=None):
+        """Initialise une nouvelle instance du modèle."""
         self.id = id or str(uuid.uuid4())
         self.date_creation = date_creation or datetime.now()
         self.date_mise_a_jour = date_mise_a_jour or datetime.now()
@@ -16,6 +20,7 @@ class ModeleBase:
         ModeleBase._instances[cls][self.id] = self
 
     def sauvegarder(self):
+        """Met à jour l’horodatage de l’instance."""
         self.date_mise_a_jour = datetime.now()
     
     def update(self, data):

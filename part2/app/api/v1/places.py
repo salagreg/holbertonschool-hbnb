@@ -19,6 +19,9 @@ lieu_model = api.model('Lieu', {
 
 @api.route('/')
 class Lieulist(Resource):
+    """Gestion des opérations sur la collection de lieux"""
+
+
     @api.marshal_list_with(lieu_model)
     def get(self):
         """Récupère la liste de tous les lieux"""
@@ -36,7 +39,9 @@ class Lieulist(Resource):
 
 @api.route('/<string:lieu_id>')
 class LieuDetail(Resource):
+    """Gestion des opérations sur un lieu individuel"""
 
+    
     @api.marshal_with(lieu_model)
     def get(self, lieu_id):
         """Récupère un lieu par son ID"""

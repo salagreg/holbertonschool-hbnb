@@ -4,25 +4,33 @@ from app.models.amenity import Equipement
 from app.models.place import Lieu
 
 class HBnBFacade:
+    """Classe de façade principale de l'application HBnB."""
+
+
     def __init__(self):
+        """Initialise les dépôts en mémoire pour chaque type d'entité."""
         self.user_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
         self.lieu_repo = InMemoryRepository()
 
     def create_user(self, user_data):
+        """Crée un nouvel utilisateur à partir des données fournies."""
         if self.get_user_by_email(user_data['email']):
-            return None  # email déjà utilisé
+            return None  
         user = Utilisateur(**user_data)
         self.user_repo.add(user)
         return user.to_dict(include_password=False)
 
     def get_user(self, user_id):
+        """Récupère un utilisateur à partir de son identifiant unique."""
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email):
+        """Recherche un utilisateur par son adresse e-mail."""
         return self.user_repo.get_by_attribute('email', email)
     
     def get_all_users(self):
+        """Récupère la liste complète des utilisateurs enregistrés."""
         users = self.user_repo.get_all()
         user_dicts = []
         for user in users:
@@ -30,17 +38,12 @@ class HBnBFacade:
         return user_dicts
     
     def update_user(self, user_id, data):
-        """
-        Met à jour un utilisateur existant.
-        Retourne le dict mis à jour sans mot de passe.
-        """
+        """Met à jour les informations d’un utilisateur existant."""
         user = self.user_repo.get(user_id)
         if not user:
             return None
         user.update(data)
         return user.to_dict(include_password=False)
-
-
 
     def create_amenity(self, data):
         """Créer un nouvel équipement"""
@@ -63,19 +66,18 @@ class HBnBFacade:
         """Mettre à jour un équipement existant"""
         equip = self.amenity_repo.get(amenity_id)
         if not equip:
-            return None  # On renvoie None, pas de tuple ici
+            return None
         equip.update(data)
         return equip.to_dict()
 
-
-
     def create_lieu(self, data):
+        """Crée un nouveau lieu à partir des données fournies."""
         for lieu in self.lieu_repo.get_all():
             if (lieu.latitude == data['latitude'] and 
                 lieu.longitude == data['longitude'] and 
                 lieu.owner and lieu.owner.id == data.get('owner_id')):
                 return None 
-        # Récupérer le propriétaire
+
         owner = None
         owner_id = data.get("owner_id")
         if owner_id:
@@ -92,13 +94,16 @@ class HBnBFacade:
         return lieu.to_dict()
 
     def get_lieu(self, lieu_id):
+        """Récupère un lieu à partir de son identifiant."""
         lieu = self.lieu_repo.get(lieu_id)
         return lieu.to_dict(include_owner=True, include_amenities=True) if lieu else None
 
     def get_all_lieux(self):
+        """Récupère la liste complète des lieux enregistrés."""
         return [l.to_dict(include_owner=True, include_amenities=True) for l in self.lieu_repo.get_all()]
 
     def update_lieu(self, lieu_id, data):
+        """Met à jour les informations d’un lieu existant."""
         lieu = self.lieu_repo.get(lieu_id)
         if not lieu:
             return None

@@ -5,6 +5,7 @@ from app.api.v1.amenities import api as amenities_ns
 from app.api.v1.places import api as lieux_ns
 
 def create_app():
+    """Fonction de création et de configuration principale de l'application Flask."""
     app = Flask(__name__)
     api = Api(
         app,
