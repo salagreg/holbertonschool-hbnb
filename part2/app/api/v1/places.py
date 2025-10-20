@@ -6,7 +6,7 @@ api = Namespace('Lieux', description='Opérations liées aux Lieux')
 
 lieu_model = api.model('Lieu', {
     'id': fields.String(description='ID du lieu'),
-    'titre': fields.String(required=True, description='Nom du Lieu'),
+    'nom': fields.String(required=True, description='Nom du Lieu'),
     'description': fields.String(required=True, description='Description du lieu'),
     'prix': fields.Float(required=True, description='Prix'),
     'latitude': fields.Float(required=True, description='Adresse Y'),
@@ -28,11 +28,10 @@ class Lieulist(Resource):
     @api.marshal_with(lieu_model, code=201)
     def post(self):
         """Crée un nouveau lieu"""
-        data = api.payload
-        lieu = facade.create_lieu(data)
-        if not lieu:
-            api.abort(400, "lieu déjà crée")
-        return lieu, 201
+        result = facade.create_lieu(api.payload)
+        if isinstance(result, dict) and "message" in result:
+            api.abort(400, result["message"])
+        return result, 201
 
 @api.route('/<string:lieu_id>')
 class LieuDetail(Resource):

@@ -1,6 +1,6 @@
-from modele_base import ModeleBase
-from user import Utilisateur
-from place import Lieu
+from app.models.modele_base import ModeleBase
+from app.models.user import Utilisateur
+from app.models.place import Lieu
 
 class Avis(ModeleBase):
     """Classe représentant un avis laissé par un utilisateur sur un lieu."""

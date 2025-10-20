@@ -1,0 +1,13 @@
+# Fichiers compilés Python
+__pycache__/
+*.pyc
+
+# Environnement virtuel
+venv/
+env/
+
+# Fichiers de logs
+*.log
+
+# Autres fichiers système
+.DS_Store

@@ -1,14 +1,15 @@
 from .modele_base import ModeleBase
 from app.models.amenity import Equipement as Amenity
 from app.models.user import Utilisateur
+from uuid import uuid4
 
 class Lieu(ModeleBase):
     """Classe représentant un lieu proposé sur HBnB."""
 
-    def __init__(self, titre, description, prix, latitude, longitude, nbr_max_voyageurs, nbr_chambres, owner=None, **kwargs):
-        from review import Avis
+    def __init__(self, nom, description, prix, latitude, longitude, nbr_max_voyageurs, nbr_chambres, owner=None, **kwargs):
         super().__init__(**kwargs)
-        self.titre = titre
+        self.id = str(uuid4())
+        self.nom = nom
         self.description = description
         self.prix = prix
         self.latitude = latitude
@@ -20,17 +21,17 @@ class Lieu(ModeleBase):
         self.amenities = []  # liste de Amenity
     
     @property
-    def titre(self):
-        return self.__titre
+    def nom(self):
+        return self.__nom
     
-    @titre.setter
-    def titre(self, value):
+    @nom.setter
+    def nom(self, value):
         if not isinstance(value, str):
             raise TypeError("Le titre doit être une chaîne de caractères.")
         if not value.strip():
             raise ValueError("Le titre ne peut pas être vide.")
-        super().is_max_length("Titre", value, 100)
-        self.__titre = value.strip()
+        super().is_max_length("Nom", value, 100)
+        self.__nom = value.strip()
     
     @property
     def description(self):
@@ -139,7 +140,7 @@ class Lieu(ModeleBase):
     def to_dict(self, include_owner=False, include_amenities=False):
         data ={
             "id": self.id,
-            "titre": self.titre,
+            "nom": self.nom,
             "description": self.description,
             "prix": self.prix,
             "latitude": self.latitude,
@@ -159,7 +160,7 @@ class Lieu(ModeleBase):
             }
         if include_amenities and self.amenities:
             data["amenities"] = [
-                {"id": a.id, "name": getattr(a, "nom", "Inconnu")} 
+                {"id": a.id, "nom": getattr(a, "nom", "Inconnu")} 
                 for a in self.amenities
             ]
         return data

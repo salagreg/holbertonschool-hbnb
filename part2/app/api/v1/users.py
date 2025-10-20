@@ -24,16 +24,21 @@ class UserList(Resource):
         "Récupère la liste de tous les utilisateurs"
         # ici tu récupères tous les utilisateurs et tu renvoies la liste de dicts
         return facade.get_all_users()
-
+    
     @api.expect(user_model)
     @api.marshal_with(user_model, code=201)
     def post(self):
         """Crée un nouvel utilisateur"""
-        data = api.payload
-        user = facade.create_user(data)
-        if not user:
-            api.abort(400, "Email déjà utilisé")
-        return user, 201
+        result = facade.create_user(api.payload)
+        # Si create_user retourne un tuple (message, status)
+        if isinstance(result, tuple):
+            api.abort(result[1], result[0]["message"])
+    
+        # Si create_user retourne juste un dict avec message d'erreur
+        elif isinstance(result, dict) and "message" in result:
+            api.abort(400, result["message"])
+    
+        return result, 201
 
 @api.route('/<string:user_id>')
 class UserUpdate(Resource):
